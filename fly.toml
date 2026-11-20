@@ -1,0 +1,23 @@
+# Despliegue en Fly.io: `fly launch --no-deploy`, `fly volumes create rumbo_data --size 5 --region eze`, `fly deploy`
+app = "rumbo-transporte"
+primary_region = "eze"        # Buenos Aires
+
+[build]
+
+[env]
+  DATA_DIR = "/data"
+  PORT = "8787"
+
+[[mounts]]
+  source = "rumbo_data"
+  destination = "/data"
+
+[http_service]
+  internal_port = 8787
+  force_https = true
+  auto_stop_machines = "off"
+  min_machines_running = 1
+  [[http_service.checks]]
+    path = "/healthz"
+    interval = "30s"
+    timeout = "5s"

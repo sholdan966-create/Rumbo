@@ -1,0 +1,17 @@
+# Despliegue en Render (https://render.com): servicio web con disco persistente para los datos.
+# Variables opcionales que se pueden agregar después desde el panel: APP_URL, SMTP_URL, MAIL_FROM.
+services:
+  - type: web
+    name: rumbo
+    runtime: docker
+    plan: starter            # el disco persistente requiere un plan pago
+    healthCheckPath: /healthz
+    disk:
+      name: rumbo-data
+      mountPath: /data
+      sizeGB: 5
+    envVars:
+      - key: DATA_DIR
+        value: /data
+      - key: SETUP_TOKEN
+        generateValue: true  # código para el primer ingreso: se ve en el panel de Render, en Environment
